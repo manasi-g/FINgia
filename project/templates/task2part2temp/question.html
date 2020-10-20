@@ -61,11 +61,11 @@
         </form>
     </p>
 <p>
-    <button type="submit" id="ga" onclick="ga()" >Get It Assured</button>
+    <button type="submit" id="ga" onclick="ga()" >To Activate</button>
     <form action="{%url 'getassured'%}">
         {%csrf_token%}
        
-        <button type="submit" id="a" name='activate' value="True">To activate</button>
+        <button type="submit" id="a" name='activate' onclick="a()" value="True">Use GIA</button>
     </form>
         {% for t in time %}
         <h2>{{t}}</h2>
@@ -110,6 +110,7 @@
             document.getElementById("progressbar").style = "width:"+{{user.total_percentage}}+"%";
             if({{user.total_percentage}}==100){
                 document.getElementById("ga").disabled = false;
+                
                 blah=1;
                 if(blah==1){
                 setTimeout(function(){
@@ -132,16 +133,25 @@
         }
 
         function ga(){
+            x=1;
             document.getElementById("ga").style.borderColor = "red";
-            document.getElementById("a").disabled = false; 
-            blah=2;
-            if(blah==2){
-                setTimeout(function(){
-                    document.getElementById("a").disabled = true; 
-                }, (300000))
-            }
+            document.getElementById("a").disabled = false;
+            
+        function a(){
+            {{user.activate}}=0;
+            document.getElementById("a").disabled = true;
+
+        }    
+           
        
         }
+        if({{user.activate}}==1){
+            document.getElementById("a").disabled = false;
+        }
+        if({{user.activate}}==0){
+            document.getElementById("a").disabled = true;
+        }
+        
 
 
 

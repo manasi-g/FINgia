@@ -33,6 +33,7 @@ class Register(models.Model):  # extended user model
     quelist = models.TextField(max_length=255, default="[]")
     bool = models.BooleanField(default=True)
     status = models.BooleanField(default=True)
+    activate = models.IntegerField(default=0)
     logouttime = models.TimeField(blank=True, null=True)
     extra_time=models.IntegerField(default=0)
     time_rem=models.IntegerField(default=1680)

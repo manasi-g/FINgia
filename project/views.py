@@ -87,13 +87,11 @@ def signup(request):
 
 def markflag(request):
     getuser = Register.objects.get(user=request.user)
-    if (getuser.total_percentage == 100):
-        getuser.condition_for_getassured = True
-        messages.info(request, "GET ASSURED activated!!")
-        getuser.save()
-    else:
-        getuser.condition_for_getassured = False
-        getuser.save()
+    #if (getuser.total_percentage == 100):
+    getuser.condition_for_getassured = True
+    messages.info(request, "GET ASSURED activated!!")
+    getuser.save()
+   
     return HttpResponseRedirect(reverse('success'))
 
 
@@ -143,12 +141,18 @@ def success(request):
             if request.POST.get('submit') == str(lst[-1]):
 
                 # lifeline get assured
+                if(getuser.total_percentage==100):
+                    getuser.activate=1
+                """ if(getuser.total_percentage!=100):
+                    getuser.activate=0  """
 
                 if (getuser.condition_for_getassured):
                     getuser.total_percentage=0
+                    getuser.activate=0
                     pre_question = Questions.objects.get(pk=lst[-1])
                     respo = Response(question=pre_question, user=getuser.user)
                     respo.save()
+                    
                     if(getuser.getassured_attemptno==1):
                         userinput1 = request.POST['user_ans']
                         if (userinput1 == pre_question.correct_answer): #attempt 1: correct
@@ -206,7 +210,7 @@ def success(request):
                             score = 4
                             bool = True
                             increment = 1
-                            percentage = 20
+                            percentage = 50
                         else:
                             score = -2
                             bool = False
@@ -217,7 +221,7 @@ def success(request):
                             score = 2
                             bool = True
                             increment = 1
-                            percentage = 20
+                            percentage = 50
                         else:
                             score = -1
                             bool = False
